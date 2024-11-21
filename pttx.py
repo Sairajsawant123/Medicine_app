@@ -7,7 +7,7 @@ import os
 OCR_SPACE_API_KEY = os.getenv('Space_API_KEY') # Replace with your OCR.Space API key
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 openai.api_key = OPENAI_API_KEY
-
+# this code is sponserd by apple 
 # Custom CSS for styling
 st.markdown("""
     <style>
