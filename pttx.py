@@ -160,27 +160,21 @@ def fetch_pharmeasy_data(medicine_name):
     return {"Website": "Pharmeasy", "Name": "N/A", "Price": "N/A"}
 
 
-async def fetch_netmeds(medicine_name):
+def fetch_netmeds_data(medicine_name):
     url = f"https://www.netmeds.com/catalogsearch/result/{medicine_name}/all"
-    browser = await launch(headless=True, args=["--no-sandbox", "--disable-setuid-sandbox"])
-    page = await browser.newPage()
-    await page.goto(url)
-    await page.waitForSelector("li.ais-InfiniteHits-item")  # Wait for content to load
-    content = await page.content()
-    soup = BeautifulSoup(content, "html.parser")
-    await browser.close()
-
-    # Extract product details
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
+    time.sleep(5)
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    driver.quit()
     product = soup.select_one("li.ais-InfiniteHits-item .cat-item")
     if product:
-        name = product.find("h3", class_="clsgetname").text.strip() if product.find("h3", class_="clsgetname") else "N/A"
-        price = product.find("span", class_="final-price").text.strip() if product.find("span", class_="final-price") else "N/A"
+        name = product.find("h3", class_="clsgetname").text.strip()
+        price = product.find("span", class_="final-price").text.strip()
         return {"Website": "Netmeds", "Name": name, "Price": price}
     return {"Website": "Netmeds", "Name": "N/A", "Price": "N/A"}
-
-# Wrapper to run in Streamlit
-def fetch_netmeds_data(medicine_name):
-    return asyncio.run(fetch_netmeds(medicine_name))
 
 # Function to fetch prices
 def fetch_prices(medicine_name):
