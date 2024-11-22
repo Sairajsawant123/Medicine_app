@@ -7,8 +7,7 @@ from selenium.webdriver.common.by import By
 import openai
 import re
 import os
-import asyncio
-from pyppeteer import launch
+
 
 # Set your API keys
 OCR_SPACE_API_KEY = os.getenv('Space_API_KEY') # Replace with your OCR.Space API key
