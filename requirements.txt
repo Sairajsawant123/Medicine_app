@@ -75,3 +75,6 @@ webdriver-manager==4.0.2
 websocket-client==1.8.0
 wsproto==1.2.0
 yarl==1.17.2
+pyppeteer==1.0.2
+beautifulsoup4==4.12.2
+nest-asyncio==1.5.6
