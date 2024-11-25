@@ -53,6 +53,26 @@ if "results_displayed" not in st.session_state:
 st.markdown('<div class="title">MediNAME</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Upload an image with prescriptions or search for medicine names directly.</div>', unsafe_allow_html=True)
 
+# Language options
+LANGUAGES = {
+    "English": "en",
+    "Hindi": "hi",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Bengali": "bn",
+    "Marathi": "mr",
+    "Gujarati": "gu",
+    "Malayalam": "ml",
+    "Kannada": "kn",
+    "Punjabi": "pa"
+}
+
+# Language selection dropdown
+selected_language = st.selectbox(
+    "Select Language",
+    options=list(LANGUAGES.keys()),
+    index=0  # Default to English
+)
 # Search bar for multiple names
 medicine_query = st.text_input(
     "Search for medicine names (separate multiple names with commas)",
@@ -96,7 +116,7 @@ def get_medicine_names(text):
         f"Return the medicine names as a bullet-point list. Do not include any other information."
     )
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}],
         max_tokens=200,
         temperature=0.5,
@@ -221,9 +241,10 @@ if st.button("Search and Fetch Data", disabled=search_disabled, use_container_wi
                     prompt = (
                         f"Provide detailed information about the medicine '{medicine}', "
                         f"including its uses, prescribed diseases, and possible side effects."
+                        f"Write the response in {selected_language} language."
                     )
                     response = openai.ChatCompletion.create(
-                        model="gpt-3.5-turbo",
+                        model="gpt-4o-mini",
                         messages=[
                             {"role": "system", "content": "You are a helpful assistant."},
                             {"role": "user", "content": prompt},
